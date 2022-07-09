@@ -4,7 +4,7 @@ on:
     branches:
       - main
 jobs:
-  installSsh:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Install Ssh key
