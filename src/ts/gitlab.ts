@@ -76,6 +76,28 @@ export type TCommonObjectAttributes = {
   url: string
 }
 
+export type TNodePositionLine = {
+  line_code: string
+  type: string
+  old_line: number | null
+  new_line: number
+}
+
+export type TNotePosition = {
+  base_sha: string
+  start_sha: string
+  head_sha: string
+  old_path: string
+  new_path: string
+  position_type: string
+  old_line: number | null
+  new_line: number
+  line_range: {
+    start: TNodePositionLine
+    end: TNodePositionLine
+  }
+}
+
 export type TMergeRequestObjectAttributes = TCommonObjectAttributes & {
   action: MergeRequestActionTypes
 }
@@ -83,6 +105,7 @@ export type TMergeRequestObjectAttributes = TCommonObjectAttributes & {
 export type TNoteObjectAttributes = TCommonObjectAttributes & {
   note: string
   noteable_type: NoteableTypes
+  position?: TNotePosition
 }
 
 export type TGitLabWebHook = {
