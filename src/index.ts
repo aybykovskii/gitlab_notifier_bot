@@ -13,11 +13,19 @@ server.use(express.json())
 const PORT = ENV.PORT || 80
 
 server.post('/', async ({ body }: RequestWithBody<TGitLabWebHook>, res) => {
-  const isMR = isMergeRequest(body)
-  const isComment = isNote(body)
+  if (isNote(body)) {
+    await telegramBot.sendMessage(
+      ENV.CHAT_ID,
+      `
+		${getUserInfo(body.user)}
+		Оставил новый комментарий: ${body.object_attributes.description}
+		URL: ${body.object_attributes.url}
+		`
+    )
+  }
 
-  await telegramBot.sendMessage(ENV.CHAT_ID, getUserInfo(body.user))
-  await telegramBot.sendMessage(ENV.CHAT_ID, JSON.stringify(body.object_attributes))
+  // await telegramBot.sendMessage(ENV.CHAT_ID, getUserInfo(body.user))
+  // await telegramBot.sendMessage(ENV.CHAT_ID, JSON.stringify(body.object_attributes))
   res.json({})
 })
 
