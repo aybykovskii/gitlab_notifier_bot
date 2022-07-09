@@ -15,11 +15,12 @@ export const getNoteLineInfo = (body: TGitLabWebHook) => {
 }
 
 export const getNoteMessage = (body: TGitLabWebHook) =>
-  isNote(body) &&
-  `
+  isNote(body)
+    ? `
 ${getUserInfo(body.user)}
 Оставил новый комментарий ${body.object_attributes?.position ? getNoteLineInfo(body) : ''}: ${
-    body.object_attributes.description
-  }
+        body.object_attributes.description
+      }
 ${body.object_attributes.url}
 `
+    : ''
