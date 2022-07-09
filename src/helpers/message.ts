@@ -14,11 +14,11 @@ export const getNoteLineInfo = (body: TGitLabWebHook) => {
     },
   } = body.object_attributes.position
 
-  const fileInfo = `в файле <code>${filePath}</code>`
+  const fileInfo = `Файл: <code>${filePath}</code>`
 
-  if (lineFrom === lineTo) return `для строки ${lineTo} ${fileInfo}`
+  if (lineFrom === lineTo) return `${fileInfo}. Строка ${lineTo}`
 
-  return `со строки ${lineFrom} до строки ${lineTo} ${fileInfo}`
+  return ` ${fileInfo}. Строки: ${lineFrom} - ${lineTo}`
 }
 
 export const getNoteMessage = (body: TGitLabWebHook) => {
@@ -26,14 +26,15 @@ export const getNoteMessage = (body: TGitLabWebHook) => {
 
   const {
     object_attributes: { position, description, url },
-    merge_request: { iid },
+    merge_request: { iid, title },
   } = body
 
   const linesInfo = position ? getNoteLineInfo(body) : ''
 
   return `
+Новый коментарий к <a href="${url}">!${iid}-${title}</a>
 ${getUserInfo(body.user)}
-Оставил новый комментарий ${linesInfo}: ${description}
-<a href="${url}">!${iid}</a>
+${linesInfo}
+${description}
 `
 }
