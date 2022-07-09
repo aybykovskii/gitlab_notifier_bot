@@ -13,11 +13,15 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           known_hosts: ${{ secrets.REMOTE_HOST }}
           if_key_exists: fail
-      - name: Checkout ti dir
-        run: ssh ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} cd ${{ secrets.REMOTE_TARGET }}
-      - name: PM2 delete gitlab-bot
-        run: ssh ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} pm2 delete gitlab-bot
-      - name: Git pull
-        run: ssh ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} git pull
-      - name: PM2 START
-        run: ssh ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} pm2 start npm --name "gitlab-bot" -- start
+      - name: connect ssh
+        run: ssh ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}
+      - name: Checkout dir
+        run: cd ${{ secrets.REMOTE_TARGET }}
+#      - name: Checkout dir
+#        run: ssh ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} cd ${{ secrets.REMOTE_TARGET }}
+#      - name: PM2 delete gitlab-bot
+#        run: ssh ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} pm2 delete gitlab-bot
+#      - name: Git pull
+#        run: ssh ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} git pull
+#      - name: PM2 START
+#        run: ssh ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} pm2 start npm --name "gitlab-bot" -- start
