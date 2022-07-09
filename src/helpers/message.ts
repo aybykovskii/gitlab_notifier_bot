@@ -1,11 +1,7 @@
 import { TGitLabUser, TGitLabWebHook } from '@ts'
 import { isMRNote, isNote } from '@helpers/gitlab'
 
-export const getUserInfo = (user: TGitLabUser) => `
-<span>
-<b>${user.name} </b> (${user.username})<${user.email}>
-</span>
-`
+export const getUserInfo = (user: TGitLabUser) => `<b>${user.name} </b> (${user.username})<${user.email}>`
 
 export const getNoteLineInfo = (body: TGitLabWebHook) => {
   if (!isNote(body) || !body.object_attributes.position) return ''
@@ -36,8 +32,8 @@ export const getNoteMessage = (body: TGitLabWebHook) => {
   const linesInfo = position ? getNoteLineInfo(body) : ''
 
   return `
-<div>${getUserInfo(body.user)}</div>
-<div>Оставил новый комментарий ${linesInfo}: ${description}</div>
+${getUserInfo(body.user)}
+Оставил новый комментарий ${linesInfo}: ${description}
 <a href="${url}">!${id}</a>
 `
 }

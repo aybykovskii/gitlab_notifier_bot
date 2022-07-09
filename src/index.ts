@@ -4,7 +4,7 @@ import express from 'express'
 import { ENV } from '@helpers'
 import { RequestWithBody, TGitLabWebHook } from '@ts'
 import { isNote } from '@helpers/gitlab'
-import { getNoteMessage } from '@helpers/message'
+import { getNoteMessage, getUserInfo } from '@helpers/message'
 
 const telegramBot = new TelegramBot(ENV.BOT_TOKEN, { polling: true })
 const server = express()
@@ -24,11 +24,10 @@ telegramBot.on('channel_post', async (msg) => {
   await telegramBot.sendMessage(
     ENV.CHAT_ID,
     `
-  <b>bold</b>, <strong>bold</strong>
-<i>italic</i>, <em>italic</em>
-<a href="URL">inline URL</a>
-<code>${msg.chat.id}</code>
-<pre>pre-formatted fixed-width code block</pre>`,
+<b>User</b>example@mail.ru
+Оставил новый комментарий со строки 10 до строки 12 в файле <code>ts/index</code>: qwe
+<a href="https://localhost:8080">!12</a>
+`,
     { parse_mode: 'HTML' }
   )
 })
