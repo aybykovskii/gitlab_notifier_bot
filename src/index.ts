@@ -8,6 +8,7 @@ import { isMergeRequest, isNote } from '@helpers/gitlab'
 const telegramBot = new TelegramBot(ENV.BOT_TOKEN, { polling: true })
 const server = express()
 
+server.use(express.json())
 const PORT = ENV.PORT || 80
 
 server.post('/', async ({ body }: RequestWithBody<TGitLabWebHook>, res) => {
