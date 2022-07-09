@@ -96,6 +96,7 @@ export type TGitLabCommit = {
 
 export type TGitLabMergeRequest = {
   id: number
+  iid: number
   target_branch: string
   source_branch: string
   title: string

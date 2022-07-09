@@ -23,10 +23,10 @@ export const getNoteLineInfo = (body: TGitLabWebHook) => {
 
 export const getNoteMessage = (body: TGitLabWebHook) => {
   if (!isMRNote(body)) return ''
-  console.log(body.merge_request)
+
   const {
     object_attributes: { position, description, url },
-    merge_request: { id },
+    merge_request: { iid },
   } = body
 
   const linesInfo = position ? getNoteLineInfo(body) : ''
@@ -34,6 +34,6 @@ export const getNoteMessage = (body: TGitLabWebHook) => {
   return `
 ${getUserInfo(body.user)}
 Оставил новый комментарий ${linesInfo}: ${description}
-<a href="${url}">!${id}</a>
+<a href="${url}">!${iid}</a>
 `
 }
