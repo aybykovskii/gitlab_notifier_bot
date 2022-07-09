@@ -14,7 +14,8 @@ server.post('/', async ({ body }: RequestWithBody<TGitLabWebHook>, res) => {
   const isMR = isMergeRequest(body)
   const isComment = isNote(body)
 
-  await telegramBot.sendMessage(ENV.CHAT_ID, '123')
+  await telegramBot.sendMessage(ENV.CHAT_ID, JSON.stringify(body.user))
+  await telegramBot.sendMessage(ENV.CHAT_ID, JSON.stringify(body.object_attributes))
   res.json({})
 })
 
