@@ -23,7 +23,7 @@ export const getNoteLineInfo = (body: TGitLabWebHook) => {
 
 export const getNoteMessage = (body: TGitLabWebHook) => {
   if (!isMRNote(body)) return ''
-
+  console.log(body.merge_request)
   const {
     object_attributes: { position, description, url },
     merge_request: { id },
