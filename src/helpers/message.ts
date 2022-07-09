@@ -1,26 +1,43 @@
 import { TGitLabUser, TGitLabWebHook } from '@ts'
-import { isNote } from '@helpers/gitlab'
+import { isMRNote, isNote } from '@helpers/gitlab'
 
-export const getUserInfo = (user: TGitLabUser) => ` ${user.name}(${user.username})<${user.email}>`
+export const getUserInfo = (user: TGitLabUser) => `
+<span>
+<b>${user.name} </b> (${user.username})<${user.email}>
+</span>
+`
 
 export const getNoteLineInfo = (body: TGitLabWebHook) => {
-  if (!isNote(body)) return ''
+  if (!isNote(body) || !body.object_attributes.position) return ''
 
-  const lineFrom = body.object_attributes.position?.line_range.start.new_line
-  const lineTo = body.object_attributes.position?.line_range.end.new_line
+  const {
+    new_path: filePath,
+    line_range: {
+      start: { new_line: lineFrom },
+      end: { new_line: lineTo },
+    },
+  } = body.object_attributes.position
 
-  if (lineFrom === lineTo) return `для строки ${lineTo}`
+  const fileInfo = `в файле <code>${filePath}</code>`
 
-  return `со строки ${lineFrom} до строки ${lineTo}`
+  if (lineFrom === lineTo) return `для строки ${lineTo} ${fileInfo}`
+
+  return `со строки ${lineFrom} до строки ${lineTo} ${fileInfo}`
 }
 
-export const getNoteMessage = (body: TGitLabWebHook) =>
-  isNote(body)
-    ? `
-${getUserInfo(body.user)}
-Оставил новый комментарий ${body.object_attributes?.position ? getNoteLineInfo(body) : ''}: ${
-        body.object_attributes.description
-      }
-${body.object_attributes.url}
+export const getNoteMessage = (body: TGitLabWebHook) => {
+  if (!isMRNote(body)) return ''
+
+  const {
+    object_attributes: { position, description, url },
+    merge_request: { id },
+  } = body
+
+  const linesInfo = position ? getNoteLineInfo(body) : ''
+
+  return `
+<div>${getUserInfo(body.user)}</div>
+<div>Оставил новый комментарий ${linesInfo}: ${description}</div>
+<a href="${url}">!${id}</a>
 `
-    : ''
+}

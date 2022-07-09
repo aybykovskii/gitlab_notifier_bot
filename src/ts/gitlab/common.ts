@@ -40,12 +40,15 @@ export type TGitLabProject = {
   http_url: string
 }
 
-export type TGitLabUser = {
-  id: number
+export type TGitLabCommitAuthor = {
   name: string
+  email: string
+}
+
+export type TGitLabUser = TGitLabCommitAuthor & {
+  id: number
   username: string
   avatar_url: string | null
-  email: string
 }
 
 export type TGitLabRepository = {
@@ -59,19 +62,7 @@ export type TCommonObjectAttributes = {
   id: number
   target_branch: string
   source_branch: string
-  source_project_id: number
-  author_id: number
-  assignee_id: number
   title: string
-  created_at: string
-  updated_at: string
-  milestone_id: number | null
-  state: string
-  blocking_discussions_resolved: boolean
-  work_in_progress: boolean
-  first_contribution: boolean
-  merge_status: string
-  target_project_id: number
   description: string
   url: string
 }
@@ -84,9 +75,6 @@ export type TNodePositionLine = {
 }
 
 export type TNotePosition = {
-  base_sha: string
-  start_sha: string
-  head_sha: string
   old_path: string
   new_path: string
   position_type: string
@@ -96,6 +84,23 @@ export type TNotePosition = {
     start: TNodePositionLine
     end: TNodePositionLine
   }
+}
+
+export type TGitLabCommit = {
+  id: string
+  message: string
+  timestamp: string
+  url: string
+  author: TGitLabCommitAuthor
+}
+
+export type TGitLabMergeRequest = {
+  id: number
+  target_branch: string
+  source_branch: string
+  title: string
+  description: string
+  position: number
 }
 
 export type TMergeRequestObjectAttributes = TCommonObjectAttributes & {
@@ -113,4 +118,12 @@ export type TGitLabWebHook = {
   event_type: EventTypes
   user: TGitLabUser
   object_attributes: TNoteObjectAttributes | TMergeRequestObjectAttributes
+}
+
+export interface TMRNoteWebHook extends TGitLabWebHook {
+  object_kind: EventTypes.NOTE
+  event_type: EventTypes.NOTE
+  object_attributes: TNoteObjectAttributes
+  project: TGitLabProject
+  merge_request: TGitLabMergeRequest
 }

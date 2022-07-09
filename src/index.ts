@@ -16,14 +16,21 @@ server.post('/', async ({ body }: RequestWithBody<TGitLabWebHook>, res) => {
   if (isNote(body)) {
     await telegramBot.sendMessage(ENV.CHAT_ID, getNoteMessage(body))
   }
-
-  // await telegramBot.sendMessage(ENV.CHAT_ID, getUserInfo(body.user))
-  // await telegramBot.sendMessage(ENV.CHAT_ID, JSON.stringify(body.object_attributes))
   res.json({})
 })
 
-telegramBot.on('channel_post', (msg) => {
+telegramBot.on('channel_post', async (msg) => {
   console.log(msg.chat.id)
+  await telegramBot.sendMessage(
+    ENV.CHAT_ID,
+    `
+  <b>bold</b>, <strong>bold</strong>
+<i>italic</i>, <em>italic</em>
+<a href="URL">inline URL</a>
+<code>${msg.chat.id}</code>
+<pre>pre-formatted fixed-width code block</pre>`,
+    { parse_mode: 'HTML' }
+  )
 })
 
 server.listen(PORT, () => {
