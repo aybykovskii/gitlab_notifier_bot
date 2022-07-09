@@ -4,6 +4,7 @@ import express from 'express'
 import { ENV } from '@helpers'
 import { RequestWithBody, TGitLabWebHook } from '@ts'
 import { isMergeRequest, isNote } from '@helpers/gitlab'
+import { getUserInfo } from '@helpers/message'
 
 const telegramBot = new TelegramBot(ENV.BOT_TOKEN, { polling: true })
 const server = express()
@@ -15,7 +16,7 @@ server.post('/', async ({ body }: RequestWithBody<TGitLabWebHook>, res) => {
   const isMR = isMergeRequest(body)
   const isComment = isNote(body)
 
-  await telegramBot.sendMessage(ENV.CHAT_ID, JSON.stringify(body.user))
+  await telegramBot.sendMessage(ENV.CHAT_ID, getUserInfo(body.user))
   await telegramBot.sendMessage(ENV.CHAT_ID, JSON.stringify(body.object_attributes))
   res.json({})
 })
