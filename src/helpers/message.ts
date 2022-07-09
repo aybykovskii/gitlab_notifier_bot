@@ -38,7 +38,7 @@ export const getNoteMessage = (body: TGitLabWebHook) => {
   const linesInfo = position ? getNoteLineInfo(body) : ''
 
   return `
-Новый коментарий к <a href="${url}">!${iid}-${title}</a>
+Новый коментарий к <a href="${url}">${title} !${iid}</a>
 ${getUserInfo(body.user)}
 ${linesInfo}
 ${description}
