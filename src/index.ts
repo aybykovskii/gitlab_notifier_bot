@@ -14,7 +14,7 @@ const PORT = ENV.PORT || 80
 
 server.post('/', async ({ body }: RequestWithBody<TGitLabWebHook>, res) => {
   if (isNote(body)) {
-    await telegramBot.sendMessage(ENV.CHAT_ID, getNoteMessage(body))
+    await telegramBot.sendMessage(ENV.CHAT_ID, getNoteMessage(body), { parse_mode: 'HTML' })
   }
   res.json({})
 })
