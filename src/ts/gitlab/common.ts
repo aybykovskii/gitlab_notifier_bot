@@ -1,28 +1,4 @@
-export enum EventTypes {
-  NOTE = 'note',
-  MERGE_REQUEST = 'merge_request',
-}
-
-export enum NoteableTypes {
-  COMMIT = 'Commit',
-  MERGE_REQUEST = 'MergeRequest',
-  ISSUE = 'Issue',
-  SNIPPET = 'Snippet',
-}
-
-export enum MergeRequestActionTypes {
-  OPEN = 'open',
-  CLOSE = 'close',
-  REOPEN = 'reopen',
-  UPDATE = 'update',
-  APPROVED = 'approved',
-  UNAPPROVED = 'unapproved',
-  APPROVAL = 'approval',
-  UNAPPROVAL = 'unapproval',
-  MERGE = 'merge',
-}
-
-export type TGitLabProject = {
+export type TProject = {
   id: number
   name: string
   description: string
@@ -40,25 +16,25 @@ export type TGitLabProject = {
   http_url: string
 }
 
-export type TGitLabCommitAuthor = {
+export type TAuthor = {
   name: string
   email: string
 }
 
-export type TGitLabUser = TGitLabCommitAuthor & {
+export type TUser = TAuthor & {
   id: number
   username: string
   avatar_url: string | null
 }
 
-export type TGitLabRepository = {
+export type TRepository = {
   name: string
   url: string
   description: string
   homepage: string
 }
 
-export type TCommonObjectAttributes = {
+export type TObjectAttributes = {
   id: number
   target_branch: string
   source_branch: string
@@ -67,34 +43,35 @@ export type TCommonObjectAttributes = {
   url: string
 }
 
-export type TNodePositionLine = {
+export type TPositionLine = {
   line_code: string
   type: string
   old_line: number | null
   new_line: number
 }
 
-export type TNotePosition = {
+export type TPosition = {
   old_path: string
   new_path: string
   position_type: string
   old_line: number | null
   new_line: number
   line_range: {
-    start: TNodePositionLine
-    end: TNodePositionLine
+    start: TPositionLine
+    end: TPositionLine
   }
 }
 
-export type TGitLabCommit = {
+export type TCommit = {
   id: string
+  title: string
   message: string
   timestamp: string
   url: string
-  author: TGitLabCommitAuthor
+  author: TAuthor
 }
 
-export type TGitLabMergeRequest = {
+export type TMergeRequest = {
   id: number
   iid: number
   target_branch: string
@@ -102,29 +79,4 @@ export type TGitLabMergeRequest = {
   title: string
   description: string
   position: number
-}
-
-export type TMergeRequestObjectAttributes = TCommonObjectAttributes & {
-  action: MergeRequestActionTypes
-}
-
-export type TNoteObjectAttributes = TCommonObjectAttributes & {
-  note: string
-  noteable_type: NoteableTypes
-  position?: TNotePosition
-}
-
-export type TGitLabWebHook = {
-  object_kind: EventTypes
-  event_type: EventTypes
-  user: TGitLabUser
-  object_attributes: TNoteObjectAttributes | TMergeRequestObjectAttributes
-}
-
-export interface TMRNoteWebHook extends TGitLabWebHook {
-  object_kind: EventTypes.NOTE
-  event_type: EventTypes.NOTE
-  object_attributes: TNoteObjectAttributes
-  project: TGitLabProject
-  merge_request: TGitLabMergeRequest
 }

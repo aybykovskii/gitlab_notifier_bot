@@ -3,8 +3,8 @@ import express from 'express'
 
 import { ENV } from '@helpers'
 import { RequestWithBody, TGitLabWebHook } from '@ts'
-import { isNote } from '@helpers/gitlab'
-import { getNoteMessage } from '@helpers/message'
+import { isNote, isPipeline } from '@helpers/gitlab'
+import { getNoteMessage, getPipelineMessage } from '@helpers/message'
 
 const telegramBot = new TelegramBot(ENV.BOT_TOKEN, { polling: true })
 const server = express()
@@ -15,8 +15,10 @@ const PORT = ENV.PORT || 80
 server.post('/', async ({ body }: RequestWithBody<TGitLabWebHook>, res) => {
   if (isNote(body)) {
     await telegramBot.sendMessage(ENV.CHAT_ID, getNoteMessage(body), { parse_mode: 'HTML' })
-  } else {
-    await telegramBot.sendMessage(ENV.CHAT_ID, body.object_kind, { parse_mode: 'HTML' })
+  }
+
+  if (isPipeline(body)) {
+    await telegramBot.sendMessage(ENV.CHAT_ID, getPipelineMessage(body), { parse_mode: 'HTML' })
   }
 
   res.json({})

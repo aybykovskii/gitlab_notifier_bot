@@ -1,10 +1,9 @@
-import { TGitLabUser, TGitLabWebHook } from '@ts'
-import { isMRNote, isNote } from '@helpers/gitlab'
+import { IMRNoteWebHook, IPipelineWebHook, TUser } from '@ts'
 
-export const getUserInfo = (user: TGitLabUser) => `${user.name} (${user.username} - ${user.email})`
+export const getUserInfo = (user: TUser) => `${user.name} (${user.username} - ${user.email})`
 
-export const getNoteLineInfo = (body: TGitLabWebHook) => {
-  if (!isNote(body) || !body.object_attributes.position) return ''
+export const getNoteLineInfo = (body: IMRNoteWebHook) => {
+  if (!body.object_attributes.position) return ''
 
   const {
     new_path: filePath,
@@ -16,9 +15,7 @@ export const getNoteLineInfo = (body: TGitLabWebHook) => {
   return `<code>${filePath}:${lineTo}</code>`
 }
 
-export const getNoteMessage = (body: TGitLabWebHook) => {
-  if (!isMRNote(body)) return ''
-
+export const getNoteMessage = (body: IMRNoteWebHook) => {
   const {
     object_attributes: { position, description, url },
     merge_request: { iid, title },
@@ -31,5 +28,16 @@ export const getNoteMessage = (body: TGitLabWebHook) => {
 ${getUserInfo(body.user)}
 ${linesInfo}
 ${description}
+`
+}
+
+export const getPipelineMessage = (body: IPipelineWebHook) => {
+  const {
+    object_attributes: { status },
+    commit: { title, url },
+  } = body
+
+  return `Pipline status: ${status}
+<a href="${url}">${title}</a>
 `
 }
