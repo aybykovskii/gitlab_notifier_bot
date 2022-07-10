@@ -16,7 +16,7 @@ server.post('/', async ({ body }: RequestWithBody<TGitLabWebHook>, res) => {
   if (isNote(body)) {
     await telegramBot.sendMessage(ENV.CHAT_ID, getNoteMessage(body), { parse_mode: 'HTML' })
   } else {
-    await telegramBot.sendMessage(ENV.CHAT_ID, JSON.stringify(body), { parse_mode: 'HTML' })
+    await telegramBot.sendMessage(ENV.CHAT_ID, body.event_type, { parse_mode: 'HTML' })
   }
 
   res.json({})
