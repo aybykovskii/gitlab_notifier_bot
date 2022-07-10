@@ -1,6 +1,7 @@
-import { IMRNoteWebHook, IMRWebHook, IPipelineWebHook, TUser } from '@ts'
+import { Emoji, IMRNoteWebHook, IMRWebHook, IPipelineWebHook, TUser } from '@ts'
+import { EMOJIS, MR_ACTION_EMOJI, PIPELINE_STATUS_EMOJI } from '@src/constants'
 
-export const getUserInfo = (user: TUser) => `${user.name} (${user.username} - ${user.email})`
+export const getUserInfo = (user: TUser) => `${EMOJIS[Emoji.USER]} ${user.name} (${user.username} - ${user.email})`
 
 export const getNoteLineInfo = (body: IMRNoteWebHook) => {
   if (!body.object_attributes.position) return ''
@@ -12,7 +13,7 @@ export const getNoteLineInfo = (body: IMRNoteWebHook) => {
     },
   } = body.object_attributes.position
 
-  return `<code>${filePath}:${lineTo}</code>`
+  return `${EMOJIS[Emoji.LOCATION]} <code>${filePath}:${lineTo}</code>`
 }
 
 export const getNoteMessage = (body: IMRNoteWebHook) => {
@@ -24,10 +25,10 @@ export const getNoteMessage = (body: IMRNoteWebHook) => {
   const linesInfo = position ? getNoteLineInfo(body) : ''
 
   return `
-Новый коментарий к <a href="${url}">${title} !${iid}</a>
+${EMOJIS[Emoji.COMMENT]} Новый коментарий к <a href="${url}">${title} !${iid}</a>
 ${getUserInfo(body.user)}
 ${linesInfo}
-${description}
+${EMOJIS[Emoji.DESCRIPTION]} ${description}
 `
 }
 
@@ -38,7 +39,7 @@ export const getPipelineMessage = (body: IPipelineWebHook) => {
     project: { web_url },
   } = body
 
-  return `Pipline status: ${status}
+  return `${PIPELINE_STATUS_EMOJI[status]} Pipline status: ${status}
 <a href="${url}">${title}</a>
 <a href="${web_url}/-/pipelines/${id}">Pipeline #${id}</a>
 `
@@ -50,8 +51,8 @@ export const getMRMessage = (body: IMRWebHook) => {
     user,
   } = body
 
-  return `<a href="${url}">${title} !${iid}</a> ${action}
-<code>${source_branch}</code> into <code>${target_branch}</code> 
+  return `${MR_ACTION_EMOJI[action]} <a href="${url}">${title} !${iid}</a> ${action}
+<code>${source_branch}</code> ${EMOJIS[Emoji.ARROW_RIGHT]} <code>${target_branch}</code> 
 ${getUserInfo(user)}
 `
 }
