@@ -14,4 +14,5 @@ export enum Emoji {
   UPDATE = 'UPDATE',
   CLOSE = 'CLOSE',
   APPROVE = 'APPROVE',
+  UNAPPROVED = 'UNAPPROVED',
 }

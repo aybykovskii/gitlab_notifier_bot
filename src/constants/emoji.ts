@@ -16,6 +16,7 @@ export const EMOJIS = {
   [Emoji.UPDATE]: '♨️',
   [Emoji.CLOSE]: '🚫',
   [Emoji.APPROVE]: '👍',
+  [Emoji.UNAPPROVED]: '👎',
 }
 
 export const PIPELINE_STATUS_EMOJI = {
@@ -31,4 +32,5 @@ export const MR_ACTION_EMOJI = {
   [MergeRequestActionTypes.CLOSE]: EMOJIS[Emoji.CLOSE],
   [MergeRequestActionTypes.MERGE]: EMOJIS[Emoji.MERGE],
   [MergeRequestActionTypes.APPROVED]: EMOJIS[Emoji.APPROVE],
+  [MergeRequestActionTypes.UNAPPROVED]: EMOJIS[Emoji.UNAPPROVED],
 }

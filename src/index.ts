@@ -1,10 +1,8 @@
 import TelegramBot from 'node-telegram-bot-api'
 import express from 'express'
 
-import { ENV } from '@helpers'
 import { RequestWithBody, TGitLabWebHook } from '@ts'
-import { isMergeRequest, isNote, isPipeline } from '@helpers/gitlab'
-import { getMRMessage, getNoteMessage, getPipelineMessage } from '@helpers/message'
+import { ENV, isMergeRequest, isNote, isPipeline, getMRMessage, getNoteMessage, getPipelineMessage } from '@helpers'
 
 const telegramBot = new TelegramBot(ENV.BOT_TOKEN, { polling: true })
 const server = express()

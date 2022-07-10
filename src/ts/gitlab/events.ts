@@ -18,6 +18,7 @@ export enum MergeRequestActionTypes {
   CLOSE = 'close',
   UPDATE = 'update',
   APPROVED = 'approved',
+  UNAPPROVED = 'unapproved',
   MERGE = 'merge',
 }
 

@@ -1,5 +1,5 @@
 import { Emoji, IMRNoteWebHook, IMRWebHook, IPipelineWebHook, TUser } from '@ts'
-import { EMOJIS, MR_ACTION_EMOJI, PIPELINE_STATUS_EMOJI } from '@src/constants'
+import { EMOJIS, MR_ACTION_EMOJI, PIPELINE_STATUS_EMOJI } from '@constants'
 
 export const getUserInfo = (user: TUser) => `${EMOJIS[Emoji.USER]} ${user.name} (${user.username} - ${user.email})`
 
