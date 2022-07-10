@@ -1,4 +1,4 @@
-import { TCommit, TMergeRequest, TObjectAttributes, TPosition, TProject, TUser } from './common'
+import { TCommit, TMergeRequest, TObjectAttributes, TPosition, TProject, TRepository, TUser } from './common'
 
 export enum ObjectKindTypes {
   NOTE = 'note',
@@ -33,6 +33,8 @@ export enum PipelineStatus {
 }
 
 export type TMRObjectAttributes = TObjectAttributes & {
+  target_branch: string
+  source_branch: string
   action: MergeRequestActionTypes
 }
 
@@ -52,15 +54,20 @@ export type TGitLabWebHook = {
   object_attributes: TNoteObjectAttributes | TMRObjectAttributes | TPipelineObjectAttributes
 }
 
+export interface IMRWebHook extends TGitLabWebHook {
+  object_attributes: TMRObjectAttributes
+}
+
 export interface IMRNoteWebHook extends TGitLabWebHook {
   object_kind: ObjectKindTypes.NOTE
-  event_type: ObjectKindTypes.NOTE
   object_attributes: TNoteObjectAttributes
   project: TProject
   merge_request: TMergeRequest
+  repository: TRepository
 }
 
 export interface IPipelineWebHook extends TGitLabWebHook {
+  user: TUser
   object_attributes: TPipelineObjectAttributes
   commit: TCommit
   project: TProject

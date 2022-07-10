@@ -36,8 +36,7 @@ export type TRepository = {
 
 export type TObjectAttributes = {
   id: number
-  target_branch: string
-  source_branch: string
+  iid: number
   title: string
   description: string
   url: string

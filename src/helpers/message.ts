@@ -1,4 +1,4 @@
-import { IMRNoteWebHook, IPipelineWebHook, TUser } from '@ts'
+import { IMRNoteWebHook, IMRWebHook, IPipelineWebHook, TUser } from '@ts'
 
 export const getUserInfo = (user: TUser) => `${user.name} (${user.username} - ${user.email})`
 
@@ -41,5 +41,17 @@ export const getPipelineMessage = (body: IPipelineWebHook) => {
   return `Pipline status: ${status}
 <a href="${url}">${title}</a>
 <a href="${web_url}/-/pipelines/${id}">Pipeline #${id}</a>
+`
+}
+
+export const getMRMessage = (body: IMRWebHook) => {
+  const {
+    object_attributes: { source_branch, target_branch, title, action, url, iid },
+    user,
+  } = body
+
+  return `<a href="${url}">${title} !${iid}</a> ${action}
+<code>${source_branch}</code> into <code>${target_branch}</code> 
+${getUserInfo(user)}
 `
 }
