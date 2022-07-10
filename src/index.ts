@@ -1,4 +1,4 @@
-import TelegramBot, { Message } from 'node-telegram-bot-api'
+import TelegramBot from 'node-telegram-bot-api'
 import express from 'express'
 
 import { RequestWithBody, TGitLabWebHook } from '@ts'
@@ -14,7 +14,7 @@ server.post('/', async ({ body }: RequestWithBody<TGitLabWebHook>, res) => {
   if (isNote(body)) {
     await telegramBot.sendMessage(ENV.CHAT_ID, getNoteMessage(body), {
       parse_mode: 'HTML',
-      reply_markup: { inline_keyboard: [[{ text: 'URL', url: body.object_attributes.url }]] },
+      reply_markup: { inline_keyboard: [[{ text: 'fixed', callback_data: '/comment_reply_fix' }]] },
     })
   }
 
@@ -27,6 +27,14 @@ server.post('/', async ({ body }: RequestWithBody<TGitLabWebHook>, res) => {
   }
 
   res.json({})
+})
+
+telegramBot.on('message', async (msg) => {
+  const isSend = msg.text === '/comment_reply_fix'
+
+  if (isSend) {
+    await telegramBot.sendMessage(ENV.CHAT_ID, JSON.stringify(msg))
+  }
 })
 
 server.listen(PORT, () => {
