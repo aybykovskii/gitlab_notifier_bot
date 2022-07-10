@@ -9,22 +9,11 @@ export const getNoteLineInfo = (body: TGitLabWebHook) => {
   const {
     new_path: filePath,
     line_range: {
-      start: { new_line: lineFrom },
       end: { new_line: lineTo },
     },
   } = body.object_attributes.position
 
-  const fileInfo = `Файл: <code>${filePath}</code>`
-
-  if (lineFrom === lineTo)
-    return `
-${fileInfo}
-Строка ${lineTo}
-`
-
-  return `
-${fileInfo}
-Строки: ${lineFrom} - ${lineTo}`
+  return `<code>${filePath}:${lineTo}</code>`
 }
 
 export const getNoteMessage = (body: TGitLabWebHook) => {
