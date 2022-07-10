@@ -1,4 +1,4 @@
-import TelegramBot from 'node-telegram-bot-api'
+import TelegramBot, { Message } from 'node-telegram-bot-api'
 import express from 'express'
 
 import { RequestWithBody, TGitLabWebHook } from '@ts'
@@ -12,7 +12,10 @@ const PORT = ENV.PORT || 80
 
 server.post('/', async ({ body }: RequestWithBody<TGitLabWebHook>, res) => {
   if (isNote(body)) {
-    await telegramBot.sendMessage(ENV.CHAT_ID, getNoteMessage(body), { parse_mode: 'HTML' })
+    await telegramBot.sendMessage(ENV.CHAT_ID, getNoteMessage(body), {
+      parse_mode: 'HTML',
+      reply_markup: { inline_keyboard: [[{ text: 'URL', url: body.object_attributes.url }]] },
+    })
   }
 
   if (isPipeline(body)) {
