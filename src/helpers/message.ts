@@ -33,11 +33,13 @@ ${description}
 
 export const getPipelineMessage = (body: IPipelineWebHook) => {
   const {
-    object_attributes: { status },
+    object_attributes: { id, status },
     commit: { title, url },
+    project: { web_url },
   } = body
 
   return `Pipline status: ${status}
 <a href="${url}">${title}</a>
+<a href="${web_url}/-/pipelines/${id}">Pipeline #${id}</a>
 `
 }

@@ -63,4 +63,5 @@ export interface IMRNoteWebHook extends TGitLabWebHook {
 export interface IPipelineWebHook extends TGitLabWebHook {
   object_attributes: TPipelineObjectAttributes
   commit: TCommit
+  project: TProject
 }
