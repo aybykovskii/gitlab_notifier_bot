@@ -29,12 +29,8 @@ server.post('/', async ({ body }: RequestWithBody<TGitLabWebHook>, res) => {
   res.json({})
 })
 
-telegramBot.on('message', async (msg) => {
-  const isSend = msg.text === '/comment_reply_fix'
-
-  if (isSend) {
-    await telegramBot.sendMessage(ENV.CHAT_ID, JSON.stringify(msg))
-  }
+telegramBot.on('callback_query', async (msg) => {
+  await telegramBot.sendMessage(ENV.CHAT_ID, JSON.stringify(msg))
 })
 
 server.listen(PORT, () => {
