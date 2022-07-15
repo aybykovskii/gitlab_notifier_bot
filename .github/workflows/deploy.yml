@@ -13,7 +13,9 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           known_hosts: ${{ secrets.KNOWN_HOST }}
           if_key_exists: fail
-      - name: connect ssh and delete session
+      - name: connect ssh and install pm2
+        run: ssh ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} npm i -g pm2
+      - name: delete session
         run: ssh ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} pm2 ls
 #         run: ssh ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} cd ${{ secrets.REMOTE_TARGET }}
 #       - name: Git pull
