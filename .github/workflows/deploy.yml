@@ -14,7 +14,7 @@ jobs:
           known_hosts: ${{ secrets.KNOWN_HOST }}
           if_key_exists: fail
       - name: connect ssh and delete session
-        run: ssh ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}
+        run: ssh ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} echo cd ${{ secrets.REMOTE_TARGET }}
       - name: cd
         run: echo cd ${{ secrets.REMOTE_TARGET }}
 #         run: ssh ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} "cd ${{ secrets.REMOTE_TARGET }} && pm2 delete gitlab-bot"
