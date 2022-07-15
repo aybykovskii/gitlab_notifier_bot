@@ -15,6 +15,7 @@ jobs:
           if_key_exists: fail
       - name: connect ssh and delete session
         run: ssh ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}
+      - name: cd
         run: cd ${{ secrets.REMOTE_TARGET }}
 #         run: ssh ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} "cd ${{ secrets.REMOTE_TARGET }} && pm2 delete gitlab-bot"
 #       - name: Git pull
