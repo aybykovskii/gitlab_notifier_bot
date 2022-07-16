@@ -14,7 +14,7 @@ jobs:
           known_hosts: ${{ secrets.KNOWN_HOST }}
           if_key_exists: fail
       - name: connect ssh and install pm2
-        run: ssh ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} sudo apt-get install -y nodejs
+        run: ssh ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} "curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash - && sudo apt-get install -y nodejs"
       - name: delete session
         run: ssh ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} node -v
 #         run: ssh ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} cd ${{ secrets.REMOTE_TARGET }}
