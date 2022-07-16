@@ -16,6 +16,8 @@ jobs:
       - name: connect ssh and install pm2
         run: ssh ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} "curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash - && sudo apt-get install -y nodejs"
       - name: delete session
+        run: ssh ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} "sudo apt-get install -y build-essential && sudo apt-get install gcc g++ make"
+      - name: node v
         run: ssh ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} node -v
 #         run: ssh ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} cd ${{ secrets.REMOTE_TARGET }}
 #       - name: Git pull
