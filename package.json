@@ -17,7 +17,9 @@
     "exec": "node -r tsconfig-paths/register -r ts-node/register"
   },
   "dependencies": {
+    "@types/axios": "^0.14.0",
     "@types/express-serve-static-core": "^4.17.29",
+    "axios": "^0.27.2",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "node-telegram-bot-api": "0.57.0",

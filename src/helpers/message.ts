@@ -39,7 +39,7 @@ export const getPipelineMessage = (body: IPipelineWebHook) => {
     project: { web_url },
   } = body
 
-  return `${PIPELINE_STATUS_EMOJI[status]} Pipline status: ${status}
+  return `${PIPELINE_STATUS_EMOJI[status]} Pipeline status: ${status}
 <a href="${url}">${title}</a>
 <a href="${web_url}/-/pipelines/${id}">Pipeline #${id}</a>
 `
