@@ -55,7 +55,7 @@ telegramBot.on('callback_query', async (msg) => {
 
     if (!discussion) return
 
-    await postMRDiscussionReply(MRId, noteId, KEYBOARD_BUTTON_TEXT[button])
+    await postMRDiscussionReply(MRId, discussion.id, KEYBOARD_BUTTON_TEXT[button])
   })
 })
 
