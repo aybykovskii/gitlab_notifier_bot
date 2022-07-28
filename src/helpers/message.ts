@@ -1,3 +1,5 @@
+import { InlineKeyboardButton, SendMessageOptions } from 'node-telegram-bot-api'
+
 import { Emoji, IMRNoteWebHook, IMRWebHook, IPipelineWebHook, TUser } from '@ts'
 import { EMOJIS, MR_ACTION_EMOJI, PIPELINE_STATUS_EMOJI } from '@constants'
 
@@ -56,3 +58,10 @@ export const getMRMessage = (body: IMRWebHook) => {
 ${getUserInfo(user)}
 `
 }
+
+export const getInlineKeyboardMsgOptions = (keyboard: InlineKeyboardButton[][]): SendMessageOptions => ({
+  parse_mode: 'HTML',
+  reply_markup: {
+    inline_keyboard: keyboard,
+  },
+})

@@ -4,14 +4,17 @@ import express from 'express'
 import { RequestWithBody, TGitLabWebHook } from '@ts'
 import {
   ENV,
-  isMergeRequest,
-  isNote,
-  isPipeline,
+  getInlineKeyboardMsgOptions,
   getMRMessage,
   getNoteMessage,
   getPipelineMessage,
-  Request,
+  isMergeRequest,
+  isNote,
+  isPipeline,
 } from '@helpers'
+import { KEYBOARD_BUTTON_TEXT, NOTE_MSG_INLINE_KEYBOARD } from '@constants/keyboard'
+import { KeyboardButton } from '@ts/keyboard'
+import { getMRDiscussions, postMRDiscussionReply } from '@api'
 
 const telegramBot = new TelegramBot(ENV.BOT_TOKEN, { polling: true })
 const server = express()
@@ -21,21 +24,11 @@ const PORT = ENV.PORT || 80
 
 server.post('/', async ({ body }: RequestWithBody<TGitLabWebHook>, res) => {
   if (isNote(body)) {
-    await telegramBot.sendMessage(ENV.CHAT_ID, getNoteMessage(body), {
-      parse_mode: 'HTML',
-      reply_markup: {
-        inline_keyboard: [
-          [
-            { text: 'fixed', callback_data: '/comment_reply_fix' },
-            {
-              text: 'second',
-              callback_data: '/second',
-            },
-          ],
-          [{ text: 'ok', callback_data: '/ok' }],
-        ],
-      },
-    })
+    await telegramBot.sendMessage(
+      ENV.CHAT_ID,
+      getNoteMessage(body),
+      getInlineKeyboardMsgOptions(NOTE_MSG_INLINE_KEYBOARD)
+    )
   }
 
   if (isPipeline(body)) {
@@ -49,26 +42,20 @@ server.post('/', async ({ body }: RequestWithBody<TGitLabWebHook>, res) => {
   res.json({})
 })
 
-type Discussion = { id: string; notes: { id: number }[] }
-
 telegramBot.on('callback_query', async (msg) => {
   const url = msg.message?.entities?.[0]?.url
-  const msgKeyboard = msg.message?.reply_markup?.inline_keyboard
-  const msgButtons = msgKeyboard?.map((keyboardButton) => keyboardButton[0])
-
-  await telegramBot.sendMessage(ENV.CHAT_ID, JSON.stringify(msgKeyboard))
-  await telegramBot.sendMessage(ENV.CHAT_ID, JSON.stringify(msgButtons))
+  const button = msg.data as KeyboardButton
 
   if (!url) return
 
   const [MRId, noteId] = url.split('merge_requests/').pop()?.split('#note_').map(Number) || []
 
-  await Request.get<Discussion[]>(`/merge_requests/${MRId}/discussions`).then(async ({ data: discussions }) => {
+  await getMRDiscussions(MRId).then(async (discussions) => {
     const discussion = discussions.find((dis) => dis.notes.map(({ id }) => id).includes(noteId))
 
     if (!discussion) return
 
-    await Request.post(`/merge_requests/${MRId}/discussions/${discussion.id}/notes?body=test comment create`)
+    await postMRDiscussionReply(MRId, noteId, KEYBOARD_BUTTON_TEXT[button])
   })
 })
 

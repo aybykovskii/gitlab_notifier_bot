@@ -90,6 +90,12 @@
       "@ts/*": [
         "./src/ts/*"
       ],
+      "@api": [
+        "./src/api/index"
+      ],
+      "@api/*": [
+        "./src/api/*"
+      ],
       "@helpers": [
         "./src/helpers/index"
       ],

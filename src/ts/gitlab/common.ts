@@ -79,3 +79,13 @@ export type TMergeRequest = {
   description: string
   position: number
 }
+
+export type TNote = {
+  id: number
+  author: TUser
+}
+
+export type TDiscussion = {
+  id: string
+  notes: TNote[]
+}
